@@ -11,18 +11,16 @@ class Admin extends Component {
         var csrf = Cookies.get('csrftoken');
         var xhr = new XMLHttpRequest();
         var formData = new FormData(form);
-        var body = 'name=' + form.name.value;
-        console.log(body);
         xhr.open("POST", '/claim/admin/', true);
         //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('X-CSRFToken', csrf);
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4) return;
             let answer = JSON.parse(this.responseText);
-            console.log(answer.claims);
+            let claims = answer.claims ? JSON.parse(answer.claims) : undefined;
             comp.setState({
                 message: answer.message,
-                claims: JSON.parse(answer.claims)
+                claims: claims
             })
         };
 
@@ -31,10 +29,9 @@ class Admin extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.setState({
-            message: "sended"
+            message: "Проверка логина и пароля..."
         });
         this.sendToServer(e.target);
-        e.target.button.value = "Отправка..."
     };
 
     render() {
