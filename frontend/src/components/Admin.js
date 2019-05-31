@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Cookies from "js-cookie";
+import AdminClaim from "./AdminClaim";
 
 class Admin extends Component {
     state = {
@@ -33,26 +34,7 @@ class Admin extends Component {
         let claims = <div>Загрузка...</div>;
         if (this.state.claims) {
             claims = this.state.claims.length !== 0 ? this.state.claims.map(claim => {
-                let opendoors = claim.fields.opendoors ? "Да" : "Нет";
-                return (
-                    <div key={claim.pk} className="claim">
-                        <h4>Заявка номер {claim.pk}</h4>
-                        <b>Имя фамилия:</b>
-                        <p>{claim.fields.name} {claim.fields.surname}</p>
-                        <b>E-mail:</b>
-                        <p>{claim.fields.email}</p>
-                        <b>День рождения:</b>
-                        <p>{claim.fields.birthday}</p>
-                        <b>Телефон:</b>
-                        <p>{claim.fields.phone}</p>
-                        <b>Интересующие области:</b>
-                        <p>{claim.fields.area}</p>
-                        <b>Знания в области программирования:</b>
-                        <p>{claim.fields.knowledges}</p>
-                        <b>Придёт на день открытых дверей: </b>
-                        <p>{opendoors}</p>
-                    </div>
-                )
+                return <AdminClaim key={claim.pk} claim={claim}/>
             }) : <div>Новых заявок нет</div>;
         }
         let content = (

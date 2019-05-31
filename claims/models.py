@@ -12,6 +12,7 @@ class Claim(models.Model):
     area = models.TextField()
     knowledges = models.TextField()
     opendoors = models.BooleanField()
+    status = models.CharField(max_length=50, default="На рассмотрении")
     accepted_admin = models.ForeignKey('UserAdmin', models.SET_DEFAULT, blank=True, default=None, null=True)
 
     def __str__(self):
@@ -21,7 +22,7 @@ class Claim(models.Model):
 class UserAdmin(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
     answer = models.TextField(blank=True)
-    task = models.CharField(max_length=150, blank=True)
+    task = models.CharField(max_length=300, blank=True)
 
 
 class UserStudent(models.Model):
