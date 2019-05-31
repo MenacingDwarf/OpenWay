@@ -46,3 +46,14 @@ def admin(request):
                 return JsonResponse({"message": 'Неверный пароль'})
         except ValueError:
             return JsonResponse({"message": 'Пользователь не зарегистрирован'})
+
+@ensure_csrf_cookie
+def login(request):
+    if request.method == "GET":
+        return render(request, 'frontend/index.html')
+
+
+@ensure_csrf_cookie
+def register(request):
+    if request.method == "GET":
+        return render(request, 'frontend/index.html')
