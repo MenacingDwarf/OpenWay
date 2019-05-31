@@ -39,7 +39,6 @@ def claim(request):
 
 def accept_claim(request):
     if request.method == "POST":
-        print(request.POST.get('id'))
         claim = Claim.objects.get(id=request.POST.get('id'))
         claim.status = "Принята"
         claim.accepted_admin = UserAdmin.objects.get(user=request.user)
@@ -49,7 +48,6 @@ def accept_claim(request):
 
 def decline_claim(request):
     if request.method == "POST":
-        print(request.POST.get('id'))
         claim = Claim.objects.get(id=request.POST.get('id'))
         claim.status = "Отклонена"
         claim.save()
@@ -67,7 +65,6 @@ def admin(request):
 
 def change_admin(request):
     if request.method == "POST":
-        print(request.POST)
         admin = UserAdmin.objects.get(user=request.user)
         admin.answer = request.POST.get('answer')
         admin.task = request.POST.get('task')

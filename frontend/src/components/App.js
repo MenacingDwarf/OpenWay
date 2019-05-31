@@ -25,7 +25,6 @@ class App extends Component {
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4) return;
             let answer = JSON.parse(this.responseText);
-            console.log(answer);
             let user_info = answer.user_info;
             if (user_info) {
                 comp.setState({
@@ -46,7 +45,6 @@ class App extends Component {
     }
 
     login = (user_info) => {
-        console.log(user_info.claim);
         this.setState({
             is_auth: true,
             user_type: user_info.type,
@@ -75,7 +73,6 @@ class App extends Component {
         xhr.open("POST", '/change_admin/', true);
         xhr.setRequestHeader('X-CSRFToken', csrf);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        console.log(body);
         xhr.send(body);
         this.setState({
             user_info: user_info

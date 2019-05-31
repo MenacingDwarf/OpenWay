@@ -41,7 +41,6 @@ class Admin extends Component {
     };
 
     render() {
-        if (this.state.claims) console.log(this.state.claims[0]);
         let claims = <div>Загрузка...</div>;
 
         if (this.state.claims) {

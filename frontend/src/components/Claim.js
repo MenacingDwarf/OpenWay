@@ -11,13 +11,11 @@ class Claim extends Component {
         var xhr = new XMLHttpRequest();
         var formData = new FormData(form);
         var body = 'name=' + form.name.value;
-        console.log(body);
         xhr.open("POST", '/claim/', true);
         //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('X-CSRFToken', csrf);
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4) return;
-            console.log('done');
             comp.setState({
                 sended: 1
             })
@@ -36,7 +34,6 @@ class Claim extends Component {
     render() {
         let user_info = this.props.user_info;
         let content = <div>Необходима авторизация!</div>;
-        console.log(user_info);
         if (this.props.claim) {
             let claim = this.props.claim;
             let message = (
