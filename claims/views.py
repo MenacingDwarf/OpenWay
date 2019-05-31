@@ -3,12 +3,13 @@ from django.http import JsonResponse
 from .models import Claim
 from django.contrib.auth import authenticate
 from django.core import serializers
+from django.views.decorators.csrf import ensure_csrf_cookie
 
-
+@ensure_csrf_cookie
 def start(request):
     return render(request, 'frontend/index.html')
 
-
+@ensure_csrf_cookie
 def claim(request):
     if request.method == "POST":
         args = request.POST
@@ -31,7 +32,7 @@ def claim(request):
     else:
         return render(request, 'frontend/index.html')
 
-
+@ensure_csrf_cookie
 def admin(request):
     if request.method == "GET":
         return render(request, 'frontend/index.html')
