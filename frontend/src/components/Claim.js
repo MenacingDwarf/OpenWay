@@ -34,7 +34,7 @@ class Claim extends Component {
     };
 
     render() {
-        console.log(this.state.sended);
+        let user_info = this.props.user_info;
         let content = <div>Отправка заявки...</div>;
         if (this.state.sended === -1) {
             content = <div>
@@ -45,14 +45,14 @@ class Claim extends Component {
                             <div className="form-group">
                                 <label htmlFor="name">Имя</label>
                                 <input type="text" required className="form-control" name="name"
-                                       id="name"/>
+                                       id="name" value={user_info.name}/>
                             </div>
                         </div>
                         <div className="col-6">
                             <div className="form-group">
                                 <label htmlFor="surname">Фамилия</label>
                                 <input type="text" required className="form-control"
-                                       name="surname"
+                                       name="surname" value={user_info.surname}
                                        id="surname"/>
                             </div>
                         </div>
@@ -60,17 +60,17 @@ class Claim extends Component {
                     <div className="form-group">
                         <label htmlFor="email">E-mail</label>
                         <input type="text" required className="form-control" name="email"
-                               id="email"/>
+                               id="email" value={user_info.email}/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="birthday">Дата рождения</label>
                         <input type="text" required className="form-control" name="birthday"
-                               id="birthday"/>
+                               id="birthday" value={user_info.birthday} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="phone">Мобильный телефон</label>
                         <input type="text" className="form-control" name="phone"
-                               id="phone"/>
+                               id="phone" value={user_info.phone}/>
                     </div>
                     <p>Чем Вам было бы интересно заниматься?</p>
                     <div className="form-check">

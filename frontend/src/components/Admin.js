@@ -3,40 +3,34 @@ import Cookies from "js-cookie";
 
 class Admin extends Component {
     state = {
-        message: null,
-        claims: undefined
+        user_info: this.props.user_info,
+        claims: undefined,
     };
-    sendToServer = (form) => {
+
+    componentDidMount() {
         let comp = this;
         var csrf = Cookies.get('csrftoken');
         var xhr = new XMLHttpRequest();
-        var formData = new FormData(form);
         xhr.open("POST", '/claim/admin/', true);
-        //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('X-CSRFToken', csrf);
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4) return;
             let answer = JSON.parse(this.responseText);
-            let claims = answer.claims ? JSON.parse(answer.claims) : undefined;
             comp.setState({
-                message: answer.message,
-                claims: claims
+                claims: JSON.parse(answer.claims)
             })
         };
 
-        xhr.send(formData);
+        xhr.send();
     };
-    handleSubmit = (e) => {
+    handlerSubmit = (e) => {
         e.preventDefault();
-        this.setState({
-            message: "Проверка логина и пароля..."
-        });
-        this.sendToServer(e.target);
+        this.props.changeAdmin({answer: e.target.answer.value, task: e.target.task.value});
     };
 
     render() {
         if (this.state.claims) console.log(this.state.claims[0]);
-        let claims = <div>Что-то пошло не так...</div>;
+        let claims = <div>Загрузка...</div>;
         if (this.state.claims) {
             claims = this.state.claims.length !== 0 ? this.state.claims.map(claim => {
                 let opendoors = claim.fields.opendoors ? "Да" : "Нет";
@@ -61,24 +55,24 @@ class Admin extends Component {
                 )
             }) : <div>Новых заявок нет</div>;
         }
-        let content = this.state.message === "success" ? (
+        let content = (
             <div>
+                <h2>Настройки ответа на заявку:</h2>
+                <div className="claim w-100">
+                    <form action="/change_admin/" onSubmit={this.handlerSubmit}>
+                        <label htmlFor="admin-answer">Введите текст ответа:</label>
+                        <input type="text" className="form-control mb-2" defaultValue={this.state.user_info.answer}
+                               name="answer" id="admin-answer"/>
+                        <label htmlFor="admin-task">Введите ссылку на задание:</label>
+                        <input type="text" className="form-control mb-2" defaultValue={this.state.user_info.task}
+                               name="task" id="admin-task"/>
+                        <input type="submit" className="btn btn-dark" value="Сохранить изменения" />
+                    </form>
+                </div>
                 <h2>Поступившие заявки:</h2>
                 <div className="claims">
                     {claims}
                 </div>
-            </div>
-        ) : (
-            <div className="admin-form">
-                <div className="h2">Авторизуйтесь</div>
-                <div style={{color: "red"}}>{this.state.message}</div>
-                <form action="/claim/admin/" method="POST" onSubmit={this.handleSubmit}>
-                    <label htmlFor="login">Введите логин</label>
-                    <input type="text" id="login" name="login" className="form-control mb-2"/>
-                    <label htmlFor="password">Введите пароль</label>
-                    <input type="password" id="password" name="password" className="form-control mb-2"/>
-                    <input type="submit" name="button" className="btn btn-dark mb-2" value="Войти"/>
-                </form>
             </div>
         );
         return (

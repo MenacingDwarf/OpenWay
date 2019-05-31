@@ -1,8 +1,45 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
+import Cookies from "js-cookie";
 
 class Header extends Component {
     render() {
+        let button = this.props.user_type === "admin" ? (
+            <li className="nav-item">
+                <Link className="nav-link" to="/claim/admin">Просмотр заявок </Link>
+            </li>
+        ) : (
+            <li className="nav-item">
+                <Link className="nav-link" to="/claim">Подать заявку </Link>
+            </li>
+        );
+        let buttons = this.props.is_auth ? (
+            <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/">Главная</Link>
+                    </li>
+                    {button}
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/" onClick={() => this.props.logout()}>Выйти</Link>
+                    </li>
+                </ul>
+            </div>
+        ) : (
+            <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/">Главная</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/login">Войти</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/register">Зарегистрироваться</Link>
+                    </li>
+                </ul>
+            </div>
+        );
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
                 <Link className="navbar-brand" to="/"><img
@@ -12,17 +49,7 @@ class Header extends Component {
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/">Главная <span className="sr-only">(current)</span></Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/claim">Подать заявку <span
-                                className="sr-only">(current)</span></Link>
-                        </li>
-                    </ul>
-                </div>
+                {buttons}
             </nav>
         )
     }

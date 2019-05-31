@@ -12,7 +12,7 @@ class Claim(models.Model):
     area = models.TextField()
     knowledges = models.TextField()
     opendoors = models.BooleanField()
-    accepted = models.BooleanField(default=False)
+    accepted_admin = models.ForeignKey('UserAdmin', models.SET_DEFAULT, blank=True, default=None, null=True)
 
     def __str__(self):
         return self.name + ' ' + self.surname
