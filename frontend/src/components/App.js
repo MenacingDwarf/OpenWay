@@ -88,7 +88,9 @@ class App extends Component {
                 <BrowserRouter>
                     <Header is_auth={this.state.is_auth} user_type={this.state.user_type} logout={this.logout}/>
                     <div className="container">
-                        <Route exact path="/" component={Home}/>
+                        <Route exact path="/" render={(routeProps) => (
+                            <Home {...routeProps} is_auth={this.state.is_auth} user_type={this.state.user_type}/>
+                        )}/>
                         <Route exact path="/claim" render={(routeProps) => (
                             <Claim {...routeProps} user_info={this.state.user_info} claim={this.state.claim}/>
                         )}/>

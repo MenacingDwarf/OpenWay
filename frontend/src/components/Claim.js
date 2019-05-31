@@ -64,7 +64,7 @@ class Claim extends Component {
                 </div>
             )
         }
-        else if (this.props.user_info){
+        else if (this.props.user_info) {
             content = <div>Отправка заявки...</div>;
             if (this.state.sended === -1) {
                 content = <div>
@@ -170,14 +170,15 @@ class Claim extends Component {
                         </div>
                         <div className="form-group">
                             <label htmlFor="comments">Ваши комментарии</label>
-                            <textarea name="comments" className="form-control" id="comments" rows="3"></textarea>
+                            <textarea name="comments" style={{fontSize: "1em"}} className="form-control" id="comments"
+                                      rows="3"></textarea>
                         </div>
                         <div className="form-group">
                             <label htmlFor="knowledges">Расскажите о своих знаниях компьютерных технологий, прикладного
                                 ПО,
                                 языков программирования: *</label>
                             <textarea name="knowledges" required className="form-control" id="knowledges"
-                                      rows="3"></textarea>
+                                      rows="3" style={{fontSize: "1em"}}></textarea>
                         </div>
                         <p>Я планирую прийти на день открытых дверей и послушать презентацию Школы</p>
                         <div className="form-check">

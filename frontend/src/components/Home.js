@@ -3,6 +3,18 @@ import {Link} from 'react-router-dom'
 
 class Home extends Component {
     render() {
+        let button = <h4>Чтобы подать заявку необходимо зарегистрироваться или войти в существующий аккаунт!</h4>;
+        if (this.props.is_auth) {
+            button = this.props.user_type === "student" ? (
+                <Link to='/claim'>
+                    <button className="btn btn-dark btn-claim">Подать заявку</button>
+                </Link>
+            ) : (
+                <Link to='/claim/admin'>
+                    <button className="btn btn-dark btn-claim">Посмотреть заявки</button>
+                </Link>
+            )
+        }
         return (
             <div>
                 <img
@@ -15,9 +27,7 @@ class Home extends Component {
                     компании-разработчике решений для финтех-отрасли. Наши стажеры получают ценный опыт в одной из самых
                     динамичных индустрий – в области платежных технологий, а лучшие – остаются с нами работать!
                 </p>
-                <Link to='/claim'>
-                    <button className="btn btn-dark btn-claim">Подать заявку</button>
-                </Link>
+                {button}
             </div>
         )
     }

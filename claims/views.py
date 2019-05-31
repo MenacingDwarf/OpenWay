@@ -92,7 +92,8 @@ def log_in(request):
                 except UserAdmin.DoesNotExist:
                     try:
                         claim = model_to_dict(Claim.objects.get(sender=UserStudent.objects.get(user=request.user)))
-                        claim['admin'] = model_to_dict(UserAdmin.objects.get(id=claim['accepted_admin']))
+                        if claim['status'] == "Принята":
+                            claim['admin'] = model_to_dict(UserAdmin.objects.get(id=claim['accepted_admin']))
                         return JsonResponse(
                             {'is_auth': True, 'message': 'success',
                              'user_info': {'type': 'student',
@@ -118,7 +119,8 @@ def get_user(request):
         except UserAdmin.DoesNotExist:
             try:
                 claim = model_to_dict(Claim.objects.get(sender=UserStudent.objects.get(user=request.user)))
-                claim['admin'] = model_to_dict(UserAdmin.objects.get(id=claim['accepted_admin']))
+                if claim['status'] == "Принята":
+                    claim['admin'] = model_to_dict(UserAdmin.objects.get(id=claim['accepted_admin']))
                 return JsonResponse(
                     {'is_auth': True, 'message': 'success',
                      'user_info': {'type': 'student',

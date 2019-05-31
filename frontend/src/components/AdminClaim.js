@@ -50,9 +50,16 @@ class AdminClaim extends Component {
         let claim = this.props.claim;
         let opendoors = claim.fields.opendoors ? "Да" : "Нет";
         let border = "solid yellow 1px";
+        let buttons = null;
         if (this.state.status === "Принята") border = "solid green 1px";
         else if (this.state.status === "Отклонена") border = "solid red 1px";
-        else if (this.state.status === "На рассмотрении") border = "solid black 1px";
+        else if (this.state.status === "На рассмотрении") {
+            border = "solid black 1px";
+            buttons = <div>
+                <button className="btn btn-danger mr-2" onClick={this.declineClaim}>Отклонить</button>
+                <button className="btn btn-success" onClick={this.acceptClaim}>Принять</button>
+            </div>
+        }
         return (
             <div className="claim" style={{border: border}}>
                 <h4>Заявка номер {claim.pk}</h4>
@@ -70,8 +77,7 @@ class AdminClaim extends Component {
                 <p>{claim.fields.knowledges}</p>
                 <b>Придёт на день открытых дверей: </b>
                 <p>{opendoors}</p>
-                <button className="btn btn-danger" onClick={this.declineClaim}>Отклонить</button>
-                <button className="btn btn-success" onClick={this.acceptClaim}>Принять</button>
+                {buttons}
             </div>
         )
     }

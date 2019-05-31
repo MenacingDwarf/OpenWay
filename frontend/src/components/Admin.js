@@ -6,6 +6,7 @@ class Admin extends Component {
     state = {
         user_info: this.props.user_info,
         claims: undefined,
+        changed: false
     };
 
     componentDidMount() {
@@ -24,23 +25,53 @@ class Admin extends Component {
 
         xhr.send();
     };
+
     handlerSubmit = (e) => {
         e.preventDefault();
         this.props.changeAdmin({answer: e.target.answer.value, task: e.target.task.value});
+        this.setState({
+            changed: true
+        });
+
+        let changeback = () => this.setState({
+            changed: false
+        });
+
+        setTimeout(changeback, 1500);
     };
 
     render() {
         if (this.state.claims) console.log(this.state.claims[0]);
         let claims = <div>Загрузка...</div>;
+
         if (this.state.claims) {
-            claims = this.state.claims.length !== 0 ? this.state.claims.map(claim => {
+            let new_claims = this.state.claims.filter(claim => claim.fields.status === "На рассмотрении");
+            let old_claims = this.state.claims.filter(claim => claim.fields.status !== "На рассмотрении");
+            let new_claims_object = new_claims.length !== 0 ? new_claims.map(claim => {
                 return <AdminClaim key={claim.pk} claim={claim}/>
             }) : <div>Новых заявок нет</div>;
+            let old_claims_object = old_claims.length !== 0 ? old_claims.map(claim => {
+                return <AdminClaim key={claim.pk} claim={claim}/>
+            }) : <div>Нет архивных заявок</div>;
+            claims = (
+                <div>
+                    <h2>Новые заявки</h2>
+                    <div className="claims">
+                        {new_claims_object}
+                    </div>
+                    <h2>Архивные заявки</h2>
+                    <div className="claims">
+                        {old_claims_object}
+                    </div>
+                </div>
+            )
         }
+        let text = this.state.changed ? <span className="text-success ml-3">Изменения сохранены</span> : null;
         let content = (
             <div>
                 <h2>Настройки ответа на заявку:</h2>
-                <div className="claim w-100">
+                <p>Текст ответа и ссылка на задание будут высвечиваться пользователям, отправившим принятые заявки.</p>
+                <div className="claim" style={{width: "96%"}}>
                     <form action="/change_admin/" onSubmit={this.handlerSubmit}>
                         <label htmlFor="admin-answer">Введите текст ответа:</label>
                         <input type="text" className="form-control mb-2" defaultValue={this.state.user_info.answer}
@@ -48,13 +79,11 @@ class Admin extends Component {
                         <label htmlFor="admin-task">Введите ссылку на задание:</label>
                         <input type="text" className="form-control mb-2" defaultValue={this.state.user_info.task}
                                name="task" id="admin-task"/>
-                        <input type="submit" className="btn btn-dark" value="Сохранить изменения" />
+                        <input type="submit" className="btn btn-dark" value="Сохранить изменения"/>
+                        {text}
                     </form>
                 </div>
-                <h2>Поступившие заявки:</h2>
-                <div className="claims">
-                    {claims}
-                </div>
+                {claims}
             </div>
         );
         return (
